@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+   
+  //customizations Customization[] 
+  spaces       Space[]                     // User's spaces
+  
+  plan          Plan      @default(STANDARD) // User's plan (Standard or Premium)
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@id([identifier, token])
+}
+
+// Optional for WebAuthn support
+
+model Testimonial {
+  id          String   @id @default(cuid()) // Unique identifier
+  spaceId     String   
+  space       Space    @relation(fields: [spaceId], references: [id])
+  title       String   // Testimonial title
+  content     String   // Testimonial content
+  imageUrl    String?  // Optional image/video URL
+  visibility  Visibility? @default(PUBLIC)     // Visibility (PUBLIC or PRIVATE)
+  createdAt   DateTime @default(now())        // Creation timestamp
+  updatedAt   DateTime @updatedAt             // Auto-update on change
+  userId  String
+  layout   Layout?    @default(SLIDER)
+  questions  Question[]
+  
+}
+model Question{
+  id   String  @id @default(cuid())
+  testimonial Testimonial @relation(fields: [testimonialId] , references: [id])
+  testimonialId String
+  question  String
+}
+
+enum Layout {
+  SLIDER
+  CAROUSEL
+  GRID
+}
+// model Customization {
+//   id          String   @id @default(cuid()) // Unique identifier
+//   userId      String                           // Foreign key to User
+//   user        User     @relation(fields: [userId], references: [id])
+//   font        String?                          // Font customization
+//   color       String?                          // Theme color (hex code)
+//   layout      String?                          // Layout type
+//   createdAt   DateTime @default(now())        // Customization creation
+//   updatedAt   DateTime @updatedAt             // Auto-update on change
+// }
+
+model Space {
+  id          String      @id @default(cuid()) // Unique identifier
+  userId      String      // Foreign key to User
+  user        User        @relation(fields: [userId], references: [id])
+  name        String      // Name of the space (e.g., website name)
+  description String?     // Optional description for the space
+  createdAt   DateTime    @default(now())      // Creation timestamp
+  updatedAt   DateTime    @updatedAt           // Auto-update on change
+
+  testimonials Testimonial[] // Space's testimonials
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum Plan {
+  STANDARD
+  PREMIUM
+}
