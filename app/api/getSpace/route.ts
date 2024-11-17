@@ -8,6 +8,9 @@ export async function GET(req: NextRequest) {
       where: {
         id: spaceId as string,
       },
+      include: {
+        testimonials: true,
+      },
     });
     if (res) {
       return new Response(JSON.stringify(res));

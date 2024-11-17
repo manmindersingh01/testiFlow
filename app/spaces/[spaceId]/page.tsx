@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import getSpace from "@/hooks/getSpace";
@@ -30,48 +31,47 @@ interface SpaceData {
   createdAt: string;
   testimonials: Testimonials[];
 }
-const page = async ({ params }: { params: { spaceId: string } }) => {
-  // const { spaceId } = useParams();
-  // const [spaceData, setSpaceData] = useState<SpaceData>();
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState("");
+const page = () => {
+  const { spaceId } = useParams();
+  const [spaceData, setSpaceData] = useState<SpaceData>();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  // useEffect(() => {
+  useEffect(() => {
+    const fetchSpace = async () => {
+      try {
+        const response = await fetch(`/api/getSpace?spaceId=${spaceId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch space data");
+        }
 
-  //   const fetchSpace = async () => {
-  //     try {
-  //       const response = await fetch(`/api/getSpace?spaceId=${spaceId}`);
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch space data");
-  //       }
+        const data = await response.json();
+        console.log(data.name);
 
-  //       const data = await response.json();
-  //       console.log(data.name);
+        setSpaceData(data);
+      } catch (err: any) {
+        console.error(err);
+        setError(err.message || "An error occurred");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //       setSpaceData(data);
-  //     } catch (err: any) {
-  //       console.error(err);
-  //       setError(err.message || "An error occurred");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+    if (spaceId) {
+      fetchSpace();
+    }
+  }, [spaceId]);
+  console.log("new", spaceData);
 
-  //   if (spaceId) {
-  //     fetchSpace();
-  //   }
-  // }, [spaceId]);
-  // console.log("new", spaceData);
+  // const { spaceId } = await params;
 
-  const { spaceId } = await params;
-
-  const res = await prisma.space.findUnique({
-    where: {
-      id: spaceId,
-    },
-    include: { testimonials: true },
-  });
-
+  // const res = await prisma.space.findUnique({
+  //   where: {
+  //     id: spaceId,
+  //   },
+  //   include: { testimonials: true },
+  // });
+  const res = spaceData;
   const testLength = res?.testimonials.length;
   console.log("res", res);
 
@@ -119,7 +119,7 @@ const page = async ({ params }: { params: { spaceId: string } }) => {
           </div>
           <div className="w-full max-w-7xl border bg-primary-foreground rounded-lg h-96 mx-auto p-2 m-2 flex flex-col items-center justify-center gap-4">
             <PenBoxIcon size={70} />
-            <CreateTestimonialButton spaceId={spaceId} />
+            <CreateTestimonialButton spaceId={spaceId as string} />
           </div>
         </div>
       </div>
