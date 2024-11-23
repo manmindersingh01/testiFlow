@@ -100,17 +100,19 @@ const page = () => {
             {testLength ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1 m-2">
                 {res?.testimonials.map((val) => (
-                  <div className=" border rounded-lg bg-black/40 text-white w-96 h-24 p-2 font-bold relative ">
-                    <div className="absolute top-1 right-0">
-                      <DropdownMenuDemo />
+                  <Link href={`/manageTestimonial/${val.id}`}>
+                    <div className=" border rounded-lg bg-black/40 text-white w-96 h-24 p-2 font-bold relative ">
+                      <div className="absolute top-1 right-0">
+                        <DropdownMenuDemo />
+                      </div>
+                      <h1>{val.title}</h1>
+                      <p className="text-gray-400 text-xs">{val.content}</p>
+                      <div className="flex items-center my-2 text-xs text-gray-400 ">
+                        <p>{val.createdAt.toLocaleString()}</p>
+                        <p>{val.visibility}</p>
+                      </div>
                     </div>
-                    <h1>{val.title}</h1>
-                    <p className="text-gray-400 text-xs">{val.content}</p>
-                    <div className="flex items-center my-2 text-xs text-gray-400 ">
-                      <p>{val.createdAt.toLocaleString()}</p>
-                      <p>{val.visibility}</p>
-                    </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (
