@@ -18,11 +18,11 @@ export default async function Home() {
       <Header />
 
       {/* Hero Section */}
-      <section className="container px-4 py-24 md:px-6 lg:py-32 mx-auto">
+      <section className="container px-4 py-24 md:px-6 lg:py-32 mx-auto ">
         <div className="flex flex-col items-center space-y-4 text-center">
           <div className="space-y-2">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-transparent bg-clip-text text-transparent tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-              Collect & Showcase Your
+              Collect & Showcase Your's
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 {" "}
                 Customer Love
