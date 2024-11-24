@@ -80,13 +80,26 @@ model Testimonial {
   userId  String
   layout   Layout?    @default(SLIDER)
   questions  Question[]
+  feedbacks    Feedback[] 
   
 }
+
 model Question{
   id   String  @id @default(cuid())
   testimonial Testimonial @relation(fields: [testimonialId] , references: [id])
   testimonialId String
   question  String
+}
+
+ model Feedback {
+  id            String    @id @default(cuid()) // Unique identifier for feedback
+  testimonialId String  
+  name           String                     // Foreign key to Testimonial
+  testimonial   Testimonial @relation(fields: [testimonialId], references: [id], onDelete: Cascade)
+                         // Optional: Foreign key to User (for logged-in users)
+  content              String                        // Feedback content
+  rating        Int?                          // Optional rating (e.g., 1-5 scale)
+  createdAt     DateTime   @default(now())    // Feedback creation timestamp
 }
 
 enum Layout {

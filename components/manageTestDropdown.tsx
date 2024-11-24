@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,10 +14,10 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { EllipsisVertical, Settings2Icon } from "lucide-react";
+import { Copy, EllipsisVertical, Settings2Icon } from "lucide-react";
 import Link from "next/link";
 
-export function DropdownMenuDemo() {
+export function DropdownMenuDemo({ testId }: { testId: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -32,10 +33,14 @@ export function DropdownMenuDemo() {
               </DropdownMenuShortcut>
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem>
-            Billing
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+
+          <DropdownMenuItem className="w-full">
+            Share link
+            <DropdownMenuShortcut>
+              <Copy />
+            </DropdownMenuShortcut>
           </DropdownMenuItem>
+
           <DropdownMenuItem>
             Settings
             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>

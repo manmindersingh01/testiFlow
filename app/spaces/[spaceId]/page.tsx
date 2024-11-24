@@ -103,7 +103,7 @@ const page = () => {
                   <Link href={`/manageTestimonial/${val.id}`}>
                     <div className=" border rounded-lg bg-black/40 text-white w-96 h-24 p-2 font-bold relative ">
                       <div className="absolute top-1 right-0">
-                        <DropdownMenuDemo />
+                        <DropdownMenuDemo testId={val.id} />
                       </div>
                       <h1>{val.title}</h1>
                       <p className="text-gray-400 text-xs">{val.content}</p>

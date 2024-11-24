@@ -18,8 +18,9 @@ type FormInputs = {
 import { UploadButton } from "../../../lib/uploadthing";
 import { log } from "console";
 import createTestimonialAction from "@/actions/createTestimonialAction";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 const Page = () => {
+  const pathname = usePathname();
   const { spaceId } = useParams();
   const {
     register,

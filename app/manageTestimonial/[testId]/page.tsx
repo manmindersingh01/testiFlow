@@ -1,7 +1,11 @@
 import React from "react";
 
 function ManageTest() {
-  return <div>ManageTest</div>;
+  return (
+    <div>
+      <h1>Manage Test</h1>
+    </div>
+  );
 }
 
 export default ManageTest;
